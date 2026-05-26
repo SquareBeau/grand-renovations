@@ -65,12 +65,7 @@ export default function GalleryPage() {
                 {photos.map((photo) => (
                   <div
                     key={photo.src}
-                    className={
-                      "relative overflow-hidden rounded-2xl bg-stone-200 " +
-                      (photo.orientation === "portrait"
-                        ? "aspect-[3/4]"
-                        : "aspect-[4/3]")
-                    }
+                    className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-stone-200"
                   >
                     <Image
                       src={photo.src}
