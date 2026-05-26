@@ -4,6 +4,7 @@ import { SITE } from "@/lib/site";
 import { HANDYMAN_SERVICES, REMODEL_SERVICES } from "@/lib/services";
 import { FEATURED_PHOTOS } from "@/lib/photos";
 import { Testimonials } from "@/components/testimonials";
+import { PhotoGrid } from "@/components/photo-grid";
 
 export default function Home() {
   const heroPhoto = FEATURED_PHOTOS[0];
@@ -173,21 +174,11 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">
-            {FEATURED_PHOTOS.map((photo) => (
-              <div
-                key={photo.src}
-                className="relative aspect-[4/3] overflow-hidden rounded-xl bg-stone-200"
-              >
-                <Image
-                  src={photo.src}
-                  alt={photo.alt}
-                  fill
-                  sizes="(min-width: 1024px) 16vw, (min-width: 768px) 33vw, 50vw"
-                  className="object-cover transition-transform duration-500 hover:scale-105"
-                />
-              </div>
-            ))}
+          <div className="mt-8">
+            <PhotoGrid
+              photos={FEATURED_PHOTOS}
+              gridClassName="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6"
+            />
           </div>
 
           <Link

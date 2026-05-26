@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import type { Metadata } from "next";
 import { SITE } from "@/lib/site";
 import {
@@ -7,6 +6,7 @@ import {
   CATEGORY_LABELS,
   CATEGORY_ORDER,
 } from "@/lib/photos";
+import { PhotoGrid } from "@/components/photo-grid";
 
 export const metadata: Metadata = {
   title: "Gallery",
@@ -61,23 +61,7 @@ export default function GalleryPage() {
                 </h2>
                 <span className="text-sm text-stone-500">{photos.length} photos</span>
               </div>
-              <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
-                {photos.map((photo) => (
-                  <div
-                    key={photo.src}
-                    className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-stone-200"
-                  >
-                    <Image
-                      src={photo.src}
-                      alt={photo.alt}
-                      fill
-                      sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
-                      className="object-cover transition-transform duration-500 hover:scale-105"
-                      loading="lazy"
-                    />
-                  </div>
-                ))}
-              </div>
+              <PhotoGrid photos={photos} />
             </div>
           );
         })}
