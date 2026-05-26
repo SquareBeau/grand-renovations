@@ -2,22 +2,17 @@ import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
 import { SITE } from "@/lib/site";
-import { PHOTOS, CATEGORY_LABELS, type Photo } from "@/lib/photos";
+import {
+  PHOTOS,
+  CATEGORY_LABELS,
+  CATEGORY_ORDER,
+} from "@/lib/photos";
 
 export const metadata: Metadata = {
   title: "Gallery",
   description:
-    "Recent Grand Renovations projects across the DFW metro — decks, patios, fences, kitchens, baths, hardwood floors, and full renovations.",
+    "Recent Grand Renovations projects across the DFW metro — decks, patios, fences, kitchens, baths, hardwood floors, and full renovations. Real photos from real DFW jobs.",
 };
-
-const CATEGORY_ORDER: Photo["category"][] = [
-  "decks-patios",
-  "fences",
-  "carpentry",
-  "kitchens",
-  "bathrooms",
-  "renovations",
-];
 
 export default function GalleryPage() {
   return (
@@ -28,13 +23,29 @@ export default function GalleryPage() {
             Gallery
           </p>
           <h1 className="mt-2 text-4xl font-semibold tracking-tight text-stone-950 md:text-5xl">
-            Real DFW projects.
+            {PHOTOS.length} real DFW projects.
           </h1>
           <p className="mt-4 max-w-2xl text-lg text-stone-600">
-            Decks, patios, fences, kitchens, baths, carpentry. A sampling of{" "}
-            {SITE.owner}&apos;s recent work — every photo is from a real
-            Grand Renovations job.
+            Every photo here is from a real Grand Renovations job. Decks,
+            patios, fences, kitchens, baths, hardwood floors, and the
+            renovations in between — all built by {SITE.owner} and his crew.
           </p>
+          <nav className="mt-8 flex flex-wrap gap-2">
+            {CATEGORY_ORDER.map((cat) => {
+              const count = PHOTOS.filter((p) => p.category === cat).length;
+              if (count === 0) return null;
+              return (
+                <a
+                  key={cat}
+                  href={`#${cat}`}
+                  className="inline-flex items-center gap-2 rounded-full border border-stone-300 bg-white px-4 py-1.5 text-sm font-medium text-stone-700 transition-colors hover:bg-stone-100 hover:text-stone-950"
+                >
+                  {CATEGORY_LABELS[cat]}
+                  <span className="text-xs text-stone-500">{count}</span>
+                </a>
+              );
+            })}
+          </nav>
         </div>
       </section>
 
@@ -43,11 +54,14 @@ export default function GalleryPage() {
           const photos = PHOTOS.filter((p) => p.category === cat);
           if (photos.length === 0) return null;
           return (
-            <div key={cat} className="mb-16 last:mb-0">
-              <h2 className="text-2xl font-semibold tracking-tight text-stone-950 md:text-3xl">
-                {CATEGORY_LABELS[cat]}
-              </h2>
-              <div className="mt-5 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
+            <div key={cat} id={cat} className="mb-20 scroll-mt-20 last:mb-0">
+              <div className="mb-5 flex items-baseline justify-between">
+                <h2 className="text-2xl font-semibold tracking-tight text-stone-950 md:text-3xl">
+                  {CATEGORY_LABELS[cat]}
+                </h2>
+                <span className="text-sm text-stone-500">{photos.length} photos</span>
+              </div>
+              <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
                 {photos.map((photo) => (
                   <div
                     key={photo.src}
@@ -64,6 +78,7 @@ export default function GalleryPage() {
                       fill
                       sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
                       className="object-cover transition-transform duration-500 hover:scale-105"
+                      loading="lazy"
                     />
                   </div>
                 ))}
